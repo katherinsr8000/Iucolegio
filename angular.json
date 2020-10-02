@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "CrudTurnos"
+    }
+  },
+  "defaultProject": "CrudTurnos",
+  "cli": {
+    "analytics": "7ccca333-a138-41a2-80bd-73bbfb09e17f"
+  }
 }
