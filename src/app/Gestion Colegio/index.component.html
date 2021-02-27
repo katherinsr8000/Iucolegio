@@ -1,0 +1,308 @@
+<div class="col-md-12">
+<nav class="navbar navbar-light bg-light">
+  <a class="navbar-brand" href="#">Gestión Colegio</a>
+  <ul class="nav nav-pills">
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="modal" data-target="#exampleModal" (click)="MostrarContenido(1)" href="#">Crear Alumno</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="modal" data-target="#exampleModal" (click)="MostrarContenido(2)" href="#">Crear Profesor</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="modal" data-target="#exampleModal" (click)="MostrarContenido(3)" href="#">Crear Asignatura</a>
+    </li>
+    <div class="btn-group" role="group">
+      <button id="btnGroupDrop1" type="button" class="btn btn-default" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Asignación Materias/Notas
+      </button>
+      <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+        <a class="dropdown-item" (click)="AsignarDocente(1)" data-toggle="modal" data-target="#exampleModalCenter">Asignar Materia - Docente</a>
+        <a class="dropdown-item" (click)="AsignarAlumn(2)" data-toggle="modal" data-target="#exampleModalCenter">Asignar Materia - Alumno</a>
+        <a class="dropdown-item" (click)="AsignarNotas(3)" data-toggle="modal" data-target="#exampleModalCenter">Asignar Notas</a>
+      </div>
+    </div>
+    <li class="nav-item">
+      <a class="nav-link" (click)="GenerarReporte()" >Reporte </a>
+    </li>
+  </ul>
+  <ol class="bi bi-align-end">
+    <span class="material-icons">
+      face
+    </span>
+  </ol>
+</nav>
+<mat-tab-group mat-align-tabs="start">
+  <mat-tab color="primary" label="Alumnos" >    
+    <div class="">  
+      <p></p>
+      <table class="table table-striped tp">
+          <thead>
+            <tr>
+              <th scope="col">Número de documento</th>
+              <th scope="col">Nombres</th>
+              <th scope="col">Apellido</th>
+              <th scope="col">Dirección</th>
+              <th scope="col">Telefono</th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of ListaAlumno ; let i = index">
+              <td hidden>{{item.idAlumno}}</td>
+              <td>{{item.numeroIdentificacion}}</td>
+              <td>{{item.nombres}}</td>
+              <td>{{item.apellidos}}</td>
+              <td>{{item.direccion}}</td>
+              <td>{{item.telefono}}</td>
+            <td>
+              <button mat-raised-button color="primary" data-toggle="modal" data-target="#exampleModal" (click)="verEdiAlumno(item)"><span class="material-icons"> mode_edit</span></button>
+            </td>
+            <td>
+              <button mat-raised-button color="warn" (click)="ejemploAlert(item)"><span class="material-icons"> delete </span></button>  
+            </td>
+          </tr>
+          </tbody>
+        </table>
+    </div>
+  </mat-tab>
+  <mat-tab label="Docentes">
+    <div class=""> 
+      <p></p> 
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Nombres</th>
+            <th scope="col">Apellido</th>
+            <th scope="col">Dirección</th>
+            <th scope="col">Telefono</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of ListaProfesor ; let i = index">
+            <td hidden>{{item.idProfesor}}</td>
+            <td>{{item.nombres}}</td>
+            <td>{{item.apellidos}}</td>
+            <td>{{item.direccion}}</td>
+            <td>{{item.telefono}}</td>
+          <td>
+            <button mat-raised-button color="primary"><span class="material-icons"> mode_edit</span></button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </mat-tab>
+</mat-tab-group>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    
+    <!-- Insertar Alumno-->
+    <div class="modal-content"  *ngIf="mostrarUno" >
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Insertar Alumno</h5>
+        <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="FAlumno">
+        <div class="form-group">
+          <label for="exampleFormControlInput1">Identificación </label>
+         <input type="text" class="form-control"  formControlName="numeroIdentificacion"> 
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlInput1">Nombres</label>
+         <input type="text" class="form-control" formControlName="nombres"> 
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlInput1">Apellidos </label>
+         <input type="text" class="form-control" formControlName="apellidos"> 
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlInput1">Dirección</label>
+         <input type="text" class="form-control" formControlName="direccion"> 
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlInput1">Telefono </label>
+         <input type="number" class="form-control" formControlName="telefono"> 
+        </div>  
+      </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" *ngIf="VerBotonEditar==false" (click)="GuardaAlumno()">Guardar</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" *ngIf="VerBotonEditar==true" (click)="EditAlumno(item)">Editar</button>
+      </div>
+    </div>
+
+    <!-- Insertar Profesor-->
+    <div class="modal-content"  *ngIf="mostrarDos" >
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Insertar Profesor</h5>
+        <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="FProfesor">
+        <div class="form-group">
+          <label for="exampleFormControlInput1">Nombres</label>
+         <input type="text" class="form-control" formControlName="nombres"> 
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlInput1">Apellidos </label>
+         <input type="text" class="form-control" formControlName="apellidos"> 
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlInput1">Dirección</label>
+         <input type="text" class="form-control" formControlName="direccion"> 
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlInput1">Telefono </label>
+         <input type="number" class="form-control" formControlName="telefono"> 
+        </div>  
+      </form>
+      </div>
+    
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="GuardaProfesor()">Guardar</button>
+      </div>
+    </div>
+
+    <!-- Insertar Asignatura-->
+    <div class="modal-content"  *ngIf="mostrartres" >
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Insertar Asignatura</h5>
+        <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="FAsigatura">
+        <div class="form-group">
+          <label for="exampleFormControlInput1">Nombre Asignatura </label>
+         <input type="text" class="form-control"  formControlName="NombreMateria"> 
+        </div>
+      </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="GuardaAsignatura()">Guardar</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal Asignacion -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+
+    <!-- Asignacion numero 1 -->
+    <div class="modal-content" *ngIf="MostrarDocentes">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Asignación de Materia a docente</h5>
+        <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">    
+        <div class="">
+          <div class="form-group col-md-10">
+            <label for="inputState">Materia :</label>
+            <select id="inputState" class="form-control">
+              <option selected>Seleccione...</option>
+              <option [value]="item" *ngFor="let item of ListaMateria">{{item.nombreMateria}}</option>
+            </select>
+          </div>
+          <div class="form-group col-md-10">
+            <label for="inputState">Docente :</label>
+            <select id="inputState" class="form-control">
+              <option selected>Seleccione...</option>
+              <option [value]="item" *ngFor="let item of getDocentes">{{item.nombre}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary">Asignar</button>
+        </div>
+    </div>
+    </div>
+
+    <!-- Asignacion numero 2 -->
+    <div class="modal-content" *ngIf="MostrarAlumnos">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Asignación de Materia a Alumno</h5>
+        <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">    
+        <div class="col-md-12">
+          <div class="form-group col-md-10">
+            <label for="inputState">Materia :</label>
+            <select id="inputState" class="form-control">
+              <option selected>Seleccione...</option>
+              <option [value]="item" *ngFor="let item of ListaMateria">{{item.nombreMateria}}</option>
+            </select>
+          </div>
+          <div class="form-group col-md-10">
+            <label for="inputState">Alumno :</label>
+            <select id="inputState" class="form-control">
+              <option selected>Seleccione...</option>
+              <option [value]="item" *ngFor="let item of getAlumnos">{{item.nombre}}</option>
+            </select>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary">Asignar</button>
+          </div>
+        </div>
+    </div>
+    </div>
+
+     <!-- Asignacion numero 3 -->
+     <div class="modal-content" *ngIf="MostrarNotas">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Asignación de notas</h5>
+        <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">    
+        <div class="col-md-12">
+          <div class="form-group col-md-10">
+            <label for="inputState">Materia :</label>
+            <select id="inputState" class="form-control">
+              <option selected>Seleccione...</option>
+              <option [value]="item" *ngFor="let item of ListaMateria">{{item.nombreMateria}}</option>
+            </select>
+          </div>
+          <div class="form-group col-md-10">
+            <label for="inputState">Alumno :</label>
+            <select id="inputState" class="form-control">
+              <option selected>Seleccione...</option>
+              <option [value]="item" *ngFor="let item of getAlumnos">{{item.nombre}}</option>
+            </select>
+          </div>
+
+          <div class="col-md-5 mb-3">
+            <label for="validationCustom01">Nota :</label>
+            <input type="number" step="any" class="form-control" id="validationCustom01" placeholder="">
+          </div>
+          
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary">Asignar</button>
+          </div>
+        </div>
+    </div>
+    </div>
+</div>
